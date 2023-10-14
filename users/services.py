@@ -36,8 +36,10 @@ def get_user_by_username(db: Session, username: str):
     return user
 
 
-def get_all_users(db: Session):
-    return paginate(db, select(DbUser).order_by(DbUser.id))
+def get_all_users(db: Session, user_filter):
+    query = select(DbUser)
+    query = user_filter.sort(query)
+    return paginate(db, query)
 
 
 def update_user(db: Session, id: int, request: UserUpdate):

@@ -1,11 +1,13 @@
-from typing import List
+from typing import Optional
 from sqlalchemy.orm.session import Session
 from fastapi import APIRouter, Depends
 from auth.oauth2 import get_current_user
 from db.database import get_db
+from users.filters import UserFilter
 from users.schemas import UserBase, UserDisplay, UserUpdate
 import users.services as services
 from fastapi_pagination import Page
+from fastapi_filter import FilterDepends
 
 router = APIRouter(
   prefix='/user',
@@ -19,8 +21,8 @@ def create_user(request: UserBase, db: Session = Depends(get_db)):
 
 # Read all users
 @router.get('/',  response_model=Page[UserDisplay] )
-def get_all_users(db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
-  return services.get_all_users(db)
+def get_all_users(user_filter: Optional[UserFilter] = FilterDepends(UserFilter) ,db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
+  return services.get_all_users(db, user_filter)
 
 # Read one user
 @router.get('/{id}', response_model=UserDisplay)
