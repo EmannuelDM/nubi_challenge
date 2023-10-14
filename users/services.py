@@ -38,6 +38,7 @@ def get_user_by_username(db: Session, username: str):
 
 def get_all_users(db: Session, user_filter):
     query = select(DbUser)
+    query = user_filter.filter(query)
     query = user_filter.sort(query)
     return paginate(db, query)
 
