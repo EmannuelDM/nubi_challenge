@@ -5,7 +5,7 @@ from auth.oauth2 import get_current_user
 from db.database import get_db
 from users.schemas import UserBase, UserDisplay, UserUpdate
 import users.services as services
-from utils.pagination import PaginatedParams
+from fastapi_pagination import Page
 
 router = APIRouter(
   prefix='/user',
@@ -18,9 +18,9 @@ def create_user(request: UserBase, db: Session = Depends(get_db)):
   return services.create_user(db, request)
 
 # Read all users
-@router.get('/' ) #response_model=List[UserDisplay]
-def get_all_users(pagination: PaginatedParams = Depends(), db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
-  return services.get_all_users(db, pagination)
+@router.get('/',  response_model=Page[UserDisplay] )
+def get_all_users(db: Session = Depends(get_db), current_user: UserBase = Depends(get_current_user)):
+  return services.get_all_users(db)
 
 # Read one user
 @router.get('/{id}', response_model=UserDisplay)

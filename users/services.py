@@ -4,7 +4,8 @@ from users.models import DbUser
 from sqlalchemy.orm.session import Session
 from db.hashing import Hash
 from users.schemas import UserBase, UserUpdate
-from utils.pagination import PaginatedParams, paginate
+from sqlalchemy import select
+from fastapi_pagination.ext.sqlalchemy import paginate
 
 
 def create_user(db: Session, request: UserBase):
@@ -35,9 +36,8 @@ def get_user_by_username(db: Session, username: str):
     return user
 
 
-def get_all_users(db: Session, pagination: PaginatedParams):
-    return paginate(db, select(DbUser), pagination.limit, pagination.offset)
-    #return db.query(DbUser).all()
+def get_all_users(db: Session):
+    return paginate(db, select(DbUser).order_by(DbUser.id))
 
 
 def update_user(db: Session, id: int, request: UserUpdate):
