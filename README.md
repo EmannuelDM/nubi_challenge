@@ -18,6 +18,10 @@ En local puedes acceder a la documentacion de swagger con http://0.0.0.0:8000/do
 http://0.0.0.0:8000/user/?order_by=-name&page=1&size=10
 
 
+## Ejecutar los tests
+Puedes ejecutar los tests ejecutando:
+docker-compose run --rm fastapi pytest .
+
 ## Librerias externas usadas
 [fastapi-filter](https://fastapi-filter.netlify.app/)
 [fastapi-pagination](https://uriyyo-fastapi-pagination.netlify.app/)
