@@ -54,7 +54,7 @@ def update_user(
 
 
 # Delete user
-@router.get("/delete/{id}")
+@router.get("/{id}/delete")
 def delete(
     id: int,
     db: Session = Depends(get_db),
