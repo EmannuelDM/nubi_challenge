@@ -22,6 +22,7 @@ http://0.0.0.0:8000/user/?order_by=-name&page=1&size=10
 Puedes ejecutar los tests ejecutando:
 docker-compose run --rm fastapi pytest .
 
-## Librerias externas usadas
-[fastapi-filter](https://fastapi-filter.netlify.app/)
-[fastapi-pagination](https://uriyyo-fastapi-pagination.netlify.app/)
+## Otras librerias usadas
+[fastapi-filter](https://fastapi-filter.netlify.app/) para los filtros de busqueda.
+[fastapi-pagination](https://uriyyo-fastapi-pagination.netlify.app/) para la paginacion en listados.
+[alembic](https://alembic.sqlalchemy.org/en/latest/) para manejo de migraciones.
