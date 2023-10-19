@@ -1,6 +1,6 @@
 from typing import Optional
 from sqlalchemy.orm.session import Session
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from auth.oauth2 import get_current_user
 from db.database import get_db
 from users.filters import UserFilter
@@ -15,7 +15,10 @@ router = APIRouter(prefix="/user", tags=["user"])
 # Create user
 @router.post("/", response_model=UserDisplay)
 def create_user(request: UserBase, db: Session = Depends(get_db)):
-    return services.create_user(db, request)
+    try:
+        return services.create_user(db, request)
+    except Exception as e:
+        raise Exception(f"Error creating user: {e}")
 
 
 # Read all users
@@ -29,7 +32,10 @@ def get_all_users(
     Get a list of users
     - **search** can be the 'name' or the 'email' of the user.
     """
-    return services.get_all_users(db, user_filter)
+    try:
+        return services.get_all_users(db, user_filter)
+    except Exception as e:
+        raise Exception(f"Error getting users: {e}")
 
 
 # Read one user
@@ -39,7 +45,10 @@ def get_user(
     db: Session = Depends(get_db),
     current_user: UserBase = Depends(get_current_user),
 ):
-    return services.get_user(db, id)
+    try:
+        return services.get_user(db, id)
+    except HTTPException as e:
+        raise e
 
 
 # Update user
@@ -50,7 +59,10 @@ def update_user(
     db: Session = Depends(get_db),
     current_user: UserBase = Depends(get_current_user),
 ):
-    return services.update_user(db, id, request)
+    try:
+        return services.update_user(db, id, request)
+    except HTTPException as e:
+        raise e
 
 
 # Delete user
@@ -60,4 +72,8 @@ def delete(
     db: Session = Depends(get_db),
     current_user: UserBase = Depends(get_current_user),
 ):
-    return services.delete_user(db, id)
+    try:
+        return services.delete_user(db, id)
+    except HTTPException as e:
+        raise e
+
